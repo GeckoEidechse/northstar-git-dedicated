@@ -19,5 +19,5 @@ RUN cd /usr/lib/northstar/R2Northstar/ \
 USER northstar
 EXPOSE 8081/tcp
 EXPOSE 37015/udp
-# ENTRYPOINT [ "/bin/sh" ]
+
 ENTRYPOINT ["/usr/libexec/nsdedi", "                                                                                                                        "]
