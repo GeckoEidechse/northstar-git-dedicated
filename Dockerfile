@@ -1,18 +1,23 @@
 FROM ghcr.io/pg9182/northstar-dedicated:1-tf2.0.11.0
 
 USER root
-# Go to location, get zip, remove old mods, unzip new, rename folder, then cleanup
+# Get git
+RUN apk add git
+# Use this arg to get a specific commit from NorthstarMods
+ARG NORTHSTARMODS_SHA1="main"
+# Go to location, remove old mods, clone new at specific commit, then cleanup
 RUN cd /usr/lib/northstar/R2Northstar/ \
-    && wget https://github.com/R2Northstar/NorthstarMods/archive/refs/heads/main.zip \
     && rm -rf mods/ \
-    && unzip main.zip \
-    && mv NorthstarMods-main/ mods \
-    && rm main.zip \
-    && cd mods \
+    && mkdir mods/ \
+    && cd mods/ \
+    && git init \
+    && git remote add origin https://github.com/R2Northstar/NorthstarMods.git \
+    && git fetch --depth 1 origin ${NORTHSTARMODS_SHA1} \
+    && git checkout FETCH_HEAD \
     && rm -rf LICENSE Northstar.Coop/ README.md .gitattributes .gitignore
 
 USER northstar
 EXPOSE 8081/tcp
 EXPOSE 37015/udp
-
+# ENTRYPOINT [ "/bin/sh" ]
 ENTRYPOINT ["/usr/libexec/nsdedi", "                                                                                                                        "]

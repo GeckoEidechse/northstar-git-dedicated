@@ -21,3 +21,11 @@ make sure to use `--no-cache` to prevent accidentally using an older version of 
 ## Replacing `pg9182/northstar-dedicated`
 
 As this image is based on pg9182's, it can be used as a drop-in replacement. However as `northstar-git-dedicated` does not provide a registry, make sure to remove `--pull always` from your run command.
+
+## Using a specific version of NorthstarMods
+
+To use a specific commit of NorthstarMods, use the build arg `NORTHSTARMODS_SHA1` when building the image. For example:
+
+```
+docker build --no-cache --build-arg NORTHSTARMODS_SHA1=db5bc4e76aebe585e6fe9b4aa7c57bb80499fcbb -t northstar-git-dedicated:latest .
+```
